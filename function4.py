@@ -1,7 +1,7 @@
 import csv
 import collections
 
-# Function for registered & non-registered company
+# Function for verifying company name in government csv file exists in the listing contractor csv file
 def registered(supplier, company):
     # Returns all the registered contractors that were awarded a tender
     # This in a in-built python function that compares the columns of data from both csv files for similar value
@@ -10,7 +10,7 @@ def registered(supplier, company):
     reg_return = {'Registered': sorted(similar_company)}
     return reg_return
 
-
+# Function for verifying company name in government csv file does not exists in the listing contractor csv file
 def non_registered(supplier, company):
     # Returns all the non-registered contractors that were awarded a tender This is a in-built python function
     # Compares the columns of data from both csv files and return the value not found in the second csv file
@@ -19,10 +19,10 @@ def non_registered(supplier, company):
     non_reg_return = {'Non-Registered': sorted(not_listed)}
     return non_reg_return
 
-
+# Function to print what is the total amount registered company was awarded
 def registered_awarded(supplier, company, awarded):
     reg_awarded_return = collections.OrderedDict()
-    reg = registered(supplier, company)
+    reg = registered(supplier, company) # reg = output of the function registered
 
     for company_name in reg['Registered']:
         for supplier_name in range(len(supplier)):
@@ -34,10 +34,10 @@ def registered_awarded(supplier, company, awarded):
 
     return reg_awarded_return
 
-
+# Function to print what is the total amount non-registered company was awarded
 def non_registered_awarded(supplier, company, awarded):
     non_reg_awarded_return = collections.OrderedDict()
-    non_reg = non_registered(supplier, company)
+    non_reg = non_registered(supplier, company)  # non_reg = output of the function non_registered
 
     for company_name in non_reg['Non-Registered']:
         for supplier_name in range(len(supplier)):
@@ -51,6 +51,7 @@ def non_registered_awarded(supplier, company, awarded):
 
 
 # Old code that print list(company name) and list(value)
+# Function to print the top 5 company
 def sort_contractors(reg_award, non_reg_award):
     sorted_contractors = collections.OrderedDict()
     sort_contractor = []
@@ -69,6 +70,7 @@ def sort_contractors(reg_award, non_reg_award):
 
 
 """ # NEW CODE THAT PRINT KEY:VALUE
+# Function to print the top 5 company
 def sort_contractors(reg_award, non_reg_award):
     sorted_contractors = collections.OrderedDict()
     sort_contractor = []
@@ -118,8 +120,10 @@ for allSupplierName in supplierCSVFile:  # Government File
 reg_award = registered_awarded(supplierNameList, companyNameList, awardList)
 non_reg_award = non_registered_awarded(supplierNameList, companyNameList, awardList)
 
-# print reg
-# print non_reg
+# print reg_award
+# print non_reg_award
+# print registered(supplierNameList, companyNameList)
+# print non_registered(supplierNameList, companyNameList)
 # print registered_awarded(supplierNameList, companyNameList, awardList)
 # print non_registered_awarded(supplierNameList, companyNameList, awardList)
-print sort_contractors(reg_award, non_reg_award)
+# print sort_contractors(reg_award, non_reg_award)
