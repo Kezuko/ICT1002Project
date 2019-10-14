@@ -12,7 +12,8 @@ def get_file_name(file_entry):
     file_entry.insert(0,file_name)
 
 def uploadFunction(event=None):
-    entryTesting = entry_csv.get() #.split("/")[-1]
+    entryTesting = entry_csv.get() 
+    entryTesting = entryTesting.split("/")[-1]
     Function2.function2(entryTesting)
 
 
