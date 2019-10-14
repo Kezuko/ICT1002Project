@@ -1,6 +1,6 @@
 from Tkinter import *
 import tkFileDialog as fd
-import Function2
+import function2
 
 # GLOBAL VARIABLE
 entry_csv = ""
