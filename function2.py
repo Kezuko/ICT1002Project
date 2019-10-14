@@ -48,7 +48,14 @@ def function2(csv_file):
     f.close()
 
     #Creates the directory with the csv file and date as the folder name
-    main_folder_name = csv_file[:-4] + "_" + str(datetime.date.today())
+    current_date = datetime.date.today()
+    current_time = datetime.datetime.now()
+    hour = str(current_time.hour)
+    minute = str(current_time.minute)
+    second = str(current_time.second)
+        
+    main_folder_name = csv_file[:-4] + "_" + str(current_date) + "_" + hour + "-" + minute + "-" + second
+
    
     for folder in folders:
         os.makedirs(main_folder_name + '/' + folder)
