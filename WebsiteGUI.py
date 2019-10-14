@@ -1,16 +1,20 @@
 from Tkinter import *
 import tkFileDialog as fd
+import Function2
+
+# GLOBAL VARIABLE
+entry_csv = ""
+
 
 def get_file_name(file_entry):
     file_name = fd.askopenfilename(title = "Select file",filetypes = (("CSV Files","*.csv"),))
     file_entry.delete(0,END)
     file_entry.insert(0,file_name)
 
-def run_and_close(event=None):
-    ######################################
-    ## EXECUTE OR CALL OTHER PYTHON FILE##
-    ######################################
-    close()
+def uploadFunction(event=None):
+    entryTesting = entry_csv.get() #.split("/")[-1]
+    Function2.function2(entryTesting)
+
 
 def close(event=None):
     root.withdraw() # if you want to bring it back
@@ -31,9 +35,9 @@ Button(root, text="Browse...", width=10, height=2, command=lambda:get_file_name(
 Label(root, text="2nd Dataset File:", font=30).place(x=100, y=500)
 Button(root, text="Browse...", width=10, height=2, command=lambda:get_file_name(entry_csv2)).place(x=1000, y=490)
 
-Button(root, text="Upload",     command=run_and_close, width=10, height=2).place(x=1250, y=430)
+Button(root, text="Upload", command=uploadFunction, width=10, height=2).place(x=1250, y=430)
 #Button(root, text="Cancel", command=close, width=10).grid(row=3, column=2, sticky=W)
 
-root.bind('<Return>', run_and_close)
+root.bind('<Return>', uploadFunction)
 root.bind('<Escape>', close)
 mainloop()
