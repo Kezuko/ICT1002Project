@@ -1,50 +1,101 @@
-import Tkinter as tk
+#import tkinter as tk                # python 3
+#from tkinter import font  as tkfont # python 3
+import Tkinter as tk     # python 2
+import tkFont as tkfont  # python 2
+import tkFileDialog as fd
+
+def get_file_name(file_entry):
+    file_name = fd.askopenfilename(title="Select file", filetypes=(("CSV Files", "*.csv"),))
+    file_entry.insert(0, file_name)
 
 
 class SampleApp(tk.Tk):
-    def __init__(self):
-        tk.Tk.__init__(self)
-        self._frame = None
-        self.switch_frame(StartPage)
 
-    def switch_frame(self, frame_class):
-        new_frame = frame_class(self)
-        if self._frame is not None:
-            self._frame.destroy()
-        self._frame = new_frame
-        self._frame.pack()
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+
+        # the container is where we'll stack a bunch of frames
+        # on top of each other, then the one we want visible
+        # will be raised above the others
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+        for F in (StartPage, PageOne, PageTwo):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
+
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame("StartPage")
+
+    def show_frame(self, page_name):
+        '''Show a frame for the given page name'''
+        frame = self.frames[page_name]
+        frame.tkraise()
 
 
 class StartPage(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        tk.Frame(self)
 
-        tk.Label(self, text="Start page", font=('Helvetica', 18, "bold")).pack(side="top", fill="x", pady=5)
-        tk.Button(self, text="Go to try page",
-                  command=lambda: parent.switch_frame(MainApplication)).pack()
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is the start page", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+        button1 = tk.Button(self, text="Go to Page One", command=lambda: controller.show_frame("PageOne"))
+        button2 = tk.Button(self, text="Go to Page Two", command=lambda: controller.show_frame("PageTwo"))
+        button1.pack()
+        button2.pack()
 
 
-class MainApplication(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
+class PageOne(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
 
         entry_csv = tk.Entry(self, text="", width=80, font=20)
         entry_csv.place(x=250, y=380)
         entry_csv2 = tk.Entry(self, text="", width=80, font=20)
         entry_csv2.place(x=250, y=500)
 
-        tk.Label(self, bg="#64dd17", height=10, font=30, text="1002 Dataset Analyzer").pack(fill="x")
-        tk.Label(self, text="1st Dataset File: ", font=30).place(x=100, y=380)
-        tk.Button(self, text="Browse...", width=10, height=2).place(x=1000, y=370)
-        tk.Label(self, text="2nd Dataset File:", font=30).place(x=100, y=500)
-        tk.Button(self, text="Browse...", width=10, height=2).place(x=1000, y=490)
+        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="1002 Dataset Analyzer")
+        label.pack(fill="x")
+        label = tk.Label(self, text="1st Dataset File: ", font=30)
+        label.place(x=100, y=380)
+        button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv))
+        button.place(x=1000, y=370)
+        label = tk.Label(self, text="2nd Dataset File:", font=30)
+        label.place(x=100, y=500)
+        button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv2))
+        button.place(x=1000, y=490)
 
-        tk.Button(self, text="Upload", width=10, height=2).place(x=1250, y=430)
+        #button = tk.Button(self, text="Upload", command=run_and_close, width=10, height=2)
+        #button.place(x=1250, y=430)
+
+
+class PageTwo(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is page 2", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"))
+        button.pack()
 
 
 if __name__ == "__main__":
-    root = SampleApp()
-    root.state("zoomed")
-    MainApplication(root).pack(side="top", fill="both", expand=True)
-    root.mainloop()
+    app = SampleApp()
+    app.state("zoomed")
+    app.mainloop()
