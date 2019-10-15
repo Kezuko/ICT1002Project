@@ -84,7 +84,7 @@ def function3Dsc(csv_file):
     return recordDsc
 
 
-def searchIdNo(uniqueNo, csv_file):
+def searchTenderIdNo(uniqueNo, csv_file):
     tenderNo = []
     agency = []
     tenderDescription = []
@@ -126,7 +126,7 @@ def searchIdNo(uniqueNo, csv_file):
     return searchReturn
 
 
-print searchIdNo("AGC000ETT14000010", "government-procurement-via-gebiz.csv") #test print search by ID
+print searchTenderIdNo("AGC000ETT14000010", "government-procurement-via-gebiz.csv") #test print search by ID
 print function3("government-procurement-via-gebiz.csv") #test print default list
 print function3Asc("government-procurement-via-gebiz.csv") #test print ascending list
 print function3Dsc("government-procurement-via-gebiz.csv") #test print descending list
