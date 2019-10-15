@@ -1,0 +1,50 @@
+import Tkinter as tk
+
+
+class SampleApp(tk.Tk):
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self._frame = None
+        self.switch_frame(StartPage)
+
+    def switch_frame(self, frame_class):
+        new_frame = frame_class(self)
+        if self._frame is not None:
+            self._frame.destroy()
+        self._frame = new_frame
+        self._frame.pack()
+
+
+class StartPage(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Frame(self)
+
+        tk.Label(self, text="Start page", font=('Helvetica', 18, "bold")).pack(side="top", fill="x", pady=5)
+        tk.Button(self, text="Go to try page",
+                  command=lambda: parent.switch_frame(MainApplication)).pack()
+
+
+class MainApplication(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+
+        entry_csv = tk.Entry(self, text="", width=80, font=20)
+        entry_csv.place(x=250, y=380)
+        entry_csv2 = tk.Entry(self, text="", width=80, font=20)
+        entry_csv2.place(x=250, y=500)
+
+        tk.Label(self, bg="#64dd17", height=10, font=30, text="1002 Dataset Analyzer").pack(fill="x")
+        tk.Label(self, text="1st Dataset File: ", font=30).place(x=100, y=380)
+        tk.Button(self, text="Browse...", width=10, height=2).place(x=1000, y=370)
+        tk.Label(self, text="2nd Dataset File:", font=30).place(x=100, y=500)
+        tk.Button(self, text="Browse...", width=10, height=2).place(x=1000, y=490)
+
+        tk.Button(self, text="Upload", width=10, height=2).place(x=1250, y=430)
+
+
+if __name__ == "__main__":
+    root = SampleApp()
+    root.state("zoomed")
+    MainApplication(root).pack(side="top", fill="both", expand=True)
+    root.mainloop()
