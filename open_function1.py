@@ -133,7 +133,7 @@ def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='
         for i in sb_list:
             result += records[i]
 
-        print "Total SB Spending: " + float(result)
+        print "Total SB Spending: " + str(result)
 
 
     elif choice == "2":
@@ -142,7 +142,7 @@ def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='
         for i in dd_list:
             result += records[i]
 
-        print "Total DD Spending: " + float(result)
+        print "Total DD Spending: " + str(result)
 
 
     elif choice == "3":
