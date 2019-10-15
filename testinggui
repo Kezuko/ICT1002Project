@@ -71,12 +71,16 @@ class PageOne(tk.Frame):
 
         label = tk.Label(self, bg="#64dd17", height=10, font=30, text="1002 Dataset Analyzer")
         label.pack(fill="x")
+        
         label = tk.Label(self, text="1st Dataset File: ", font=30)
         label.place(x=100, y=380)
+        
         button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv))
         button.place(x=1000, y=370)
+        
         label = tk.Label(self, text="2nd Dataset File:", font=30)
         label.place(x=100, y=500)
+        
         button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv2))
         button.place(x=1000, y=490)
 
@@ -89,6 +93,8 @@ class PageTwo(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        """above codes are important"""
+
         label = tk.Label(self, text="This is page 2", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
         button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"))
