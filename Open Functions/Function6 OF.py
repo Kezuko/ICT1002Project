@@ -1,12 +1,10 @@
 import csv
 
-
 def generate_all_spending_records(csv_file='government-procurement-via-gebiz.csv'):
     """Returns a dictionary that stores each individual department and branch with amount spent
         e.g. {<name> : <amount_spent>}"""
 
     records = {} #stores <agency_name> : <procurement amount>
-    
     f = open(csv_file,'rb')
     reader = csv.reader(f, delimiter=',')
     header = False
@@ -27,9 +25,6 @@ def generate_all_spending_records(csv_file='government-procurement-via-gebiz.csv
     f.close()
     return records
 
-        
-    
-
 def generate_sb_list(csv_file='Categorize_Agency.csv'):
     """Returns a list of SB"""
     sb_list = []
@@ -38,8 +33,6 @@ def generate_sb_list(csv_file='Categorize_Agency.csv'):
     reader = csv.reader(f, delimiter=',')
     header = False
  
-
-
     for row in reader:
         column_index = 0
         if header:
@@ -53,20 +46,11 @@ def generate_sb_list(csv_file='Categorize_Agency.csv'):
                         agency = agency.split(".")
                         name = agency[1]
                         sb_list.append(name)
-                    
-                    
-                    
-                    
-
         else:
             header = True
 
     f.close()
     return sb_list
-
-
-
-
 
 def generate_dd_list(csv_file='Categorize_Agency.csv'):
     """Returns a list of dd"""
@@ -76,7 +60,6 @@ def generate_dd_list(csv_file='Categorize_Agency.csv'):
     reader = csv.reader(f, delimiter=',')
     header = False
     
-
     for row in reader:
         column_index = 0
         if header:
@@ -89,24 +72,11 @@ def generate_dd_list(csv_file='Categorize_Agency.csv'):
                     if agency[:2] == "DD":
                         agency = agency.split(".")
                         name = agency[1]
-                        dd_list.append(name)
-                    
-                    
-                    
-                    
-
+                        dd_list.append(name)                  
         else:
             header = True
     
     return dd_list
-
-            
-    
-    
-    
-    
-        
-
 
 def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categorize_Agency.csv'):
     """Takes in raw_input() from user to view DB/SS/Total spendings
@@ -114,8 +84,6 @@ def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='
         Calls generate_sb_list()
         Calls generate_dd_list()"""
         
-
-
     #Temporary Menu
     print "Select option from menu"
     print"-------------------------"
@@ -132,10 +100,7 @@ def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='
         sb_list = generate_sb_list()
         for i in sb_list:
             result += records[i]
-
         print "Total SB Spending: " + str(result)
-
-
     elif choice == "2":
         result = 0
         dd_list = generate_dd_list()
