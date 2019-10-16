@@ -5,7 +5,7 @@ import pandas as pd
 from numpy.core import records
 
 
-def function3(csv_file):
+def eachSectorTotalAmtProcurement(csv_file):
     records = {}  # stores <agency_name> : <procurement amount>
 
     f = open(csv_file, 'rb')
@@ -30,7 +30,7 @@ def function3(csv_file):
     return records
 
 
-def function3Asc(csv_file):
+def eachSectorTotalAmtProcurementAsc(csv_file):
     records = {}  # stores <agency_name> : <procurement amount>
 
     f = open(csv_file, 'rb')
@@ -57,7 +57,7 @@ def function3Asc(csv_file):
     return recordAsc
 
 
-def function3Dsc(csv_file):
+def eachSectorTotalAmtProcurementDsc(csv_file):
     records = {}  # stores <agency_name> : <procurement amount>
 
     f = open(csv_file, 'rb')
