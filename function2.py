@@ -14,20 +14,10 @@ class Record:
         self.SupplierName = ""
         self.AwardAmount = ""
         self.SerialNumber = 0
-        
-
-
-
-
-
-
-
+  
 def function2(csv_file):
     """Reads the government agency csv files ONLY"""
-
-    
     f = open(csv_file, 'rb')
-    
     folders = [] #stores all unique agency names
     records = {} #stores key as agency_name and value as list of Record objects e.g. {<agency_name> : <[Record(), Record(), ...]>} 
     
@@ -43,8 +33,6 @@ def function2(csv_file):
         else:
             header = True
         
-
-
     f.close()
 
     #Creates the directory with the csv file and date as the folder name
@@ -55,12 +43,10 @@ def function2(csv_file):
     second = str(current_time.second)
         
     main_folder_name = csv_file[:-4] + "_" + str(current_date) + "_" + hour + "-" + minute + "-" + second
-
-   
+ 
     for folder in folders:
         os.makedirs(main_folder_name + '/' + folder)
                
-    
     #Opens the CSV file and puts each row into a Record object
     f = open(csv_file,'rb')
     reader = csv.reader(f, delimiter=',')
@@ -81,17 +67,12 @@ def function2(csv_file):
 
             if record.Agency in records.keys():
                 records[record.Agency].append(record)
-
             else:
                 records[record.Agency] = [record]
         else:
             header = True
 
     f.close()
-
-
-
-
 
     #Iterates through records dictionary and writes each agency's record list into the text file
     
