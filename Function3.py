@@ -2,12 +2,15 @@ import csv
 
 
 def eachSectorTotalAmtProcurement(csv_file):
-    records = {}  # stores <agency_name> : <procurement amount>
-
+    # Stores <agency_name> : <procurement amount>
+    records = {} 
+    
+    # Opens the CSV file
     f = open(csv_file, 'rb')
     reader = csv.reader(f, delimiter=',')
     header = False
-
+    
+    # Iterates through the CSV file, go through agency and procurement amount, and calculate total procurement
     for row in reader:
         if header:
             agency = row[1]
@@ -27,12 +30,15 @@ def eachSectorTotalAmtProcurement(csv_file):
 
 
 def eachSectorTotalAmtProcurementAsc(csv_file):
-    records = {}  # stores <agency_name> : <procurement amount>
-
+    # Stores <agency_name> : <procurement amount>
+    records = {}
+    
+    # Opens the CSV file
     f = open(csv_file, 'rb')
     reader = csv.reader(f, delimiter=',')
     header = False
-
+    
+    # Iterates through the CSV file, go through agency and procurement amount, and calculate total procurement
     for row in reader:
         if header:
             agency = row[1]
@@ -47,19 +53,22 @@ def eachSectorTotalAmtProcurementAsc(csv_file):
             header = True
 
     f.close()
-
+    
+    # Sorts the records in ascending order and return result
     recordAsc = sorted(records.values())
-
     return recordAsc
 
 
 def eachSectorTotalAmtProcurementDsc(csv_file):
-    records = {}  # stores <agency_name> : <procurement amount>
-
+    # Stores <agency_name> : <procurement amount>
+    records = {}
+    
+    # Opens the CSV file
     f = open(csv_file, 'rb')
     reader = csv.reader(f, delimiter=',')
     header = False
-
+    
+    # Iterates through the CSV file, go through agency and procurement amount, and calculate total procurement
     for row in reader:
         if header:
             agency = row[1]
@@ -74,12 +83,12 @@ def eachSectorTotalAmtProcurementDsc(csv_file):
             header = True
 
     f.close()
-
+    
+    # Sorts the records in descending order and return result
     recordDsc = sorted(records.values(), reverse=True)
-
     return recordDsc
 
-
-print function3("government-procurement-via-gebiz.csv") #test print default list
-print function3Asc("government-procurement-via-gebiz.csv") #test print ascending list
-print function3Dsc("government-procurement-via-gebiz.csv") #test print descending list
+# Test print results of function
+# print function3("government-procurement-via-gebiz.csv")
+# print function3Asc("government-procurement-via-gebiz.csv") 
+# print function3Dsc("government-procurement-via-gebiz.csv") 
