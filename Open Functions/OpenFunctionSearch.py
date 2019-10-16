@@ -1,6 +1,7 @@
 import csv
 
 def searchTenderIdNo(idNo, csv_file):
+    # Creates list to store data
     tenderNo = []
     agency = []
     tenderDescription = []
@@ -8,11 +9,13 @@ def searchTenderIdNo(idNo, csv_file):
     tenderDetailStatus = []
     supplierName = []
     awardedAmt = []
-
+    
+    # Opens the CSV file
     f = open(csv_file, 'rb')
     reader = csv.reader(f, delimiter=',')
     found = False
-
+    
+    # Iterates through the CSV file, identify the user defined Tender ID no. and store in list
     for row in reader:
         tender = row[0]
         if tender == idNo:
@@ -28,7 +31,8 @@ def searchTenderIdNo(idNo, csv_file):
         found = True
 
     f.close()
-
+    
+    # Return results in the following format
     searchReturn = {
         "Tender No.": tenderNo,
         "Agency": agency,
@@ -43,6 +47,7 @@ def searchTenderIdNo(idNo, csv_file):
 
 
 def searchTenderIdCode(idCode, csv_file):
+    # Creates list to store data
     results = []
     tenderNo = []
     agency = []
@@ -51,11 +56,13 @@ def searchTenderIdCode(idCode, csv_file):
     tenderDetailStatus = []
     supplierName = []
     awardedAmt = []
-
+    
+    # Opens the CSV file
     f = open(csv_file, 'rb')
     reader = csv.reader(f, delimiter=',')
     header = False
-
+    
+    # Iterates through the CSV file, identify specific user defined value and store in list
     for row in reader:
         if idCode in row[0]:
             results.append(row)
@@ -72,7 +79,7 @@ def searchTenderIdCode(idCode, csv_file):
 
     f.close()
 
-    print results
+    return results
 
 
 # print searchTenderIdCode("AGO", "government-procurement-via-gebiz.csv")
