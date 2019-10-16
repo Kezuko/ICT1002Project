@@ -1,8 +1,4 @@
 import csv
-import datetime
-import dictionary as dictionary
-import pandas as pd
-from numpy.core import records
 
 
 def eachSectorTotalAmtProcurement(csv_file):
