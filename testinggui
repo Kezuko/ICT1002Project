@@ -151,6 +151,6 @@ class PageThree(tk.Frame):
 if __name__ == "__main__":
     app = SampleApp()
     app.title("ICT1002 PROJECT")
-    app.iconbitmap(r'sitlogo_Ncr_icon.ico')
+    #app.iconbitmap(r'sitlogo_Ncr_icon.ico')
     app.state("zoomed")
     app.mainloop()
