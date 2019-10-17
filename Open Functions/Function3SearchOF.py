@@ -82,6 +82,21 @@ def searchTenderIdCode(idCode, csv_file):
     return results
 
 
+def searchDateRange(startDate, endDate):
+    # Opens the CSV file and locate the award_date column
+    df = pd.read_csv('government-procurement-via-gebiz.csv', parse_dates=True)
+    dfList = df.loc[:, ['award_date']]
+    
+    # Convert the starting date and ending date into a datetime format
+    dfList.award_date = pd.to_datetime(dfList.award_date)
+    
+    # Determine the values between two dates of a date column as user defined
+    results = df.loc[(dfList.award_date > startDate) & (dfList.award_date <= endDate)]
+
+    return results
+
+
+# print searchDateRange("2015-2-5", "2015-2-7")
 # print searchTenderIdCode("AGO", "government-procurement-via-gebiz.csv")
 # print searchTenderIdNo("AGO000ETT15000001", "government-procurement-via-gebiz.csv")
 
