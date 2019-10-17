@@ -59,10 +59,8 @@ def searchTenderIdCode(idCode, csv_file):
     for row in reader:
         if idCode in row[0]:
             results.append(row)
-
     else:
         header = True
-
     f.close()
 
     return results
@@ -80,7 +78,6 @@ def searchDateRange(startDate, endDate):
     results = df.loc[(dfList.award_date > startDate) & (dfList.award_date <= endDate)]
 
     return results
-
 
 # print searchDateRange("2015-2-5", "2015-2-7")
 # print searchTenderIdCode("AGO", "government-procurement-via-gebiz.csv")
