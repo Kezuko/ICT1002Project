@@ -54,7 +54,7 @@ def searchTenderIdCode(idCode):
     dfList = df.loc[:, ['tender_no']]
 
     # Determine and locate all rows that contains value defined by user
-    results = df.loc[df.tender_no.str.contains(idCode)]
+    results = df.loc[dfList.tender_no.str.contains(idCode)]
 
     return results
 
