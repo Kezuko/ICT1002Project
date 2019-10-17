@@ -53,7 +53,15 @@ def sort_low_amt(low_reg):
     
     
 """Open function 4/5 - sort the register/non-register company by year"""
-    # Sort registered awarded company via year
+# function to store only the year into a list (required for function reg_yr_award & nonreg_yr_award)
+def dates(dateList):
+    list_year = []
+    for count in dateList:  # Checking the dates found in the government csv
+        if count[0:4] not in list_year: # date are stored in the format yy/mm/dd, so count[0:4] will only check for the year
+            list_year.append(count[0:4])  # if the year does not exist in the list called list_year, store the year.
+    return list_year
+
+# Sort registered awarded company via year
 def reg_yr_award(supplierList, companyList, awardList, dateList):
     sort_year = collections.OrderedDict()
     register_company = reg_company(supplierList, companyList)  # Get the list of registered company
