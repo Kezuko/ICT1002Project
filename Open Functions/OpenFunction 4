@@ -1,0 +1,93 @@
+import csv
+import collections
+
+
+cname = open('listing-of-registered-contractors.csv')
+companyCSVFILE = csv.reader(cname)  # Read the data
+companyName = next(companyCSVFILE)  # Print from the second rows onwards
+
+gname = open('government-procurement-via-gebiz.csv')
+supplierCSVFile = csv.reader(gname)  # read the data
+supplierName = next(supplierCSVFile)  # Print from the second rows onwards
+
+
+for allCompanyName in companyCSVFILE:  # Contractor File
+    companyNameList.append(allCompanyName[0])  # Append the company names which is on column 0 into the companyNameList
+
+for allSupplierName in supplierCSVFile:  # Government File
+    date.append(allSupplierName[3])
+    if allSupplierName[5] != 'na':  # If supplier names is not equal to 'na'
+        supplierNameList.append(allSupplierName[5])  # Append the supplier names which is on column 5 into the supplierNameList
+        awardList.append(allSupplierName[
+                             6])  # As some of the companies can have 0 value awarded, but still a company. Hence, we can't use totalAwardAmt != 0 as a condition. However, NA for companies surely means 0 for awarded amount
+
+
+"""OPEN FUNCTION"""
+"""Open function 4/5 - sort the register/non-register company by highest to lowest OR lowest to highest awarded amount"""
+def sort_high_amt(high_reg):
+    # Return a list that show the registered/non-registered (based on the list input) company name and it's awarded amount from highest to the lowest
+    sort_company = []
+    sort_amount = []
+    sorted_high_value = collections.OrderedDict()
+
+    for count in sorted(high_reg, key=high_reg.get, reverse=True):  # Sort by descending order
+        sort_company.append(count)
+        sort_amount.append(high_reg[count])
+        sorted_high_value = sort_company, sort_amount
+
+    return sorted_high_value
+
+
+def sort_low_amt(low_reg):
+    #Return a list that show the registered/non-registered (based on the list input) company name and it's awarded amount from lowest to the highest
+    sort_company = []
+    sort_amount = []
+    sorted_low_value = collections.OrderedDict()
+
+    for count in sorted(low_reg, key=low_reg.get, reverse=False):  # Sort by ascending order
+        sort_company.append(count)
+        sort_amount.append(low_reg[count])
+        sorted_low_value = sort_company, sort_amount
+
+    return sorted_low_value
+    
+    
+"""Open function 4/5 - sort the register/non-register company by year"""
+    # Sort registered awarded company via year
+def reg_yr_award(supplierList, companyList, awardList, dateList):
+    sort_year = collections.OrderedDict()
+    register_company = reg_company(supplierList, companyList)  # Get the list of registered company
+    years = dates(dateList) # Get the list of year (2015, 2016, 2017)
+    for year in years:
+        sort_award = collections.OrderedDict()
+        for company_name in register_company:
+            for supplier_name in range(len(supplierList)):
+                if company_name == supplierList[supplier_name]:  # company_name is equal to the value of the key in the dictionary "supplierList"
+                    if year in dateList[supplier_name]:
+                        if year not in sort_year:
+                            if company_name not in sort_award:
+                                sort_award[company_name] = float(awardList[supplier_name])
+                            else:
+                                sort_award[company_name] += float(awardList[supplier_name])
+        sort_year[year] = sort_award
+    return sort_year
+
+
+# Sort non-registered awarded company via year
+def nonreg_yr_award(supplierList, companyList, awardList, dateList):
+    sort_year = collections.OrderedDict()
+    non_register_company = nonreg_company(supplierList, companyList)  # Get the list of non-registered company
+    years = dates(dateList)  # Get the list of year (2015, 2016, 2017)
+    for year in years:
+        sort_award = collections.OrderedDict()
+        for company_name in non_register_company:
+            for supplier_name in range(len(supplierList)):
+                if company_name == supplierList[supplier_name]:
+                    if year in dateList[supplier_name]:
+                        if year not in sort_year:
+                            if company_name not in sort_award:
+                                sort_award[company_name] = float(awardList[supplier_name])
+                            else:
+                                sort_award[company_name] += float(awardList[supplier_name])
+        sort_year[year] = sort_award
+    return sort_year
