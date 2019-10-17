@@ -48,22 +48,13 @@ def searchTenderIdNo(idNo, csv_file):
     return searchReturn
 
 
-def searchTenderIdCode(idCode, csv_file):
-    # Creates list to store data
-    results = []
-    
-    # Opens the CSV file
-    f = open(csv_file, 'rb')
-    reader = csv.reader(f, delimiter=',')
-    header = False
-    
-    # Iterates through the CSV file, identify specific user defined value and store in list
-    for row in reader:
-        if idCode in row[0]:
-            results.append(row)
-    else:
-        header = True
-    f.close()
+def searchTenderIdCode(idCode):
+    # Opens the CSV file and locate the tender_no column
+    df = pd.read_csv('government-procurement-via-gebiz.csv')
+    dfList = df.loc[:, ['tender_no']]
+
+    # Determine and locate all rows that contains value defined by user
+    results = df.loc[df.tender_no.str.contains(idCode)]
 
     return results
 
@@ -81,7 +72,8 @@ def searchDateRange(startDate, endDate):
 
     return results
 
+
 # print searchDateRange("2015-2-5", "2015-2-7")
-# print searchTenderIdCode("AGO", "government-procurement-via-gebiz.csv")
+# print searchTenderIdCode("AGC")
 # print searchTenderIdNo("AGO000ETT15000001", "government-procurement-via-gebiz.csv")
 
