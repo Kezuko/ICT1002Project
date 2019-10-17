@@ -49,13 +49,6 @@ def searchTenderIdNo(idNo, csv_file):
 def searchTenderIdCode(idCode, csv_file):
     # Creates list to store data
     results = []
-    tenderNo = []
-    agency = []
-    tenderDescription = []
-    awardDate = []
-    tenderDetailStatus = []
-    supplierName = []
-    awardedAmt = []
     
     # Opens the CSV file
     f = open(csv_file, 'rb')
@@ -66,13 +59,6 @@ def searchTenderIdCode(idCode, csv_file):
     for row in reader:
         if idCode in row[0]:
             results.append(row)
-            tenderNo.append(str(row[0]))
-            agency.append(str(row[1]))
-            tenderDescription.append(str(row[2]))
-            awardDate.append(str(row[3]))
-            tenderDetailStatus.append(str(row[4]))
-            supplierName.append(str(row[5]))
-            awardedAmt.append(str(row[6]))
 
     else:
         header = True
