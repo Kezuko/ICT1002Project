@@ -1,8 +1,15 @@
 #import tkinter as tk                # python 3
 #from tkinter import font  as tkfont # python 3
 import Tkinter as tk     # python 2
+import ttk
+from function4 import *
+from Function3 import *
+from function6 import *
 import tkFont as tkfont  # python 2
 import tkFileDialog as fd
+import pandas as pd
+from top5byYear import *
+from procurementbyYear import *
 from PIL import ImageTk, Image
 
 
@@ -18,11 +25,11 @@ class SampleApp(tk.Tk):
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        image = Image.open('pythonbackground.png')
+        """image = Image.open('pythonbackground.png')
         photo = ImageTk.PhotoImage(image)
         label = tk.Label(self, image=photo)
         label.image = photo  # keep a reference!
-        label.place(x=0, y=0, relwidth=1, relheight=1)
+        label.place(x=0, y=0, relwidth=1, relheight=1)"""
 
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
@@ -33,7 +40,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, PageTwo, PageThree):
+        for F in (StartPage, PageOne, PageTwo, Function3Page, Function4Page, Function5Page, Function6Page):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -61,10 +68,16 @@ class StartPage(tk.Frame):
 
         button1 = tk.Button(self, text="Go to Page One", command=lambda: controller.show_frame("PageOne"))
         button2 = tk.Button(self, text="Go to Page Two", command=lambda: controller.show_frame("PageTwo"))
-        button3 = tk.Button(self, text="Go to Page Three", command=lambda: controller.show_frame("PageThree"))
+        button3 = tk.Button(self, text="Go to Page Three", command=lambda: controller.show_frame("Function3Page"))
+        button4 = tk.Button(self, text="Go to Page Four", command=lambda: controller.show_frame("Function4Page"))
+        button5 = tk.Button(self, text="Go to Page Five", command=lambda: controller.show_frame("Function5Page"))
+        button6 = tk.Button(self, text="Go to Page Six", command=lambda: controller.show_frame("Function6Page"))
         button1.pack()
         button2.pack()
         button3.pack()
+        button4.pack()
+        button5.pack()
+        button6.pack()
 
 
 class PageOne(tk.Frame):
@@ -87,13 +100,13 @@ class PageOne(tk.Frame):
         label = tk.Label(self, bg="#64dd17", height=10, font=30, text="1002 Dataset Analyzer")
         label.pack(fill="x")
 
-        label = tk.Label(self, text="Procurement File: ", font=30)
+        label = tk.Label(self, text="1st Dataset File: ", font=30)
         label.place(x=100, y=380)
 
         button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv))
         button.place(x=1000, y=370)
 
-        label = tk.Label(self, text="Contractor/Listed File:", font=30)
+        label = tk.Label(self, text="2nd Dataset File:", font=30)
         label.place(x=100, y=500)
 
         button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv2))
@@ -118,17 +131,17 @@ class PageTwo(tk.Frame):
         button.place(x=30, y=400)
 
         button = tk.Button(self, text="Function 3", height=2, font=100,
-                           command=lambda: controller.show_frame("StartPage"),
+                           command=lambda: controller.show_frame("Function3Page"),
                            fg='black', width=50)
         button.place(x=30, y=460)
 
         button = tk.Button(self, text="Function 4", height=2, font=100,
-                           command=lambda: controller.show_frame("StartPage"),
+                           command=lambda: controller.show_frame("Function4Page"),
                            fg='black', width=50)
         button.place(x=30, y=520)
 
         button = tk.Button(self, text="Function 5", height=2, font=100,
-                           command=lambda: controller.show_frame("StartPage"),
+                           command=lambda: controller.show_frame("Function5Page"),
                            fg='black', width=50)
         button.place(x=30, y=580)
 
@@ -143,14 +156,373 @@ class PageTwo(tk.Frame):
         button.place(x=30, y=700)
 
 
-class PageThree(tk.Frame):
+
+class Function3Page(tk.Frame):
+
+    def orderForAtoZ(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = eachSectorTotalAmtProcurementAtoZ("government-procurement-via-gebiz.csv")
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def orderForZtoA(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = eachSectorTotalAmtProcurementZtoA("government-procurement-via-gebiz.csv")
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def ascendingOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = eachSectorTotalAmtProcurementAsc("government-procurement-via-gebiz.csv")
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def descendingOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = eachSectorTotalAmtProcurementDsc("government-procurement-via-gebiz.csv")
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
         """above codes are important"""
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100,
+                           command=lambda: controller.show_frame("PageTwo"),
+                           fg='black', width=20)
+        self.button.place(x=30, y=900)
+
+        #Header for the Page
+        self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="Function 3")
+        self.label.pack(fill="x")
+
+        #Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+        self.button = tk.Button(self, height=2, width=50, text="Original Order A-Z", command=self.orderForAtoZ).place(x=30, y=400)
+        self.button = tk.Button(self, height=2, width=50, text="Original Order Z-A", command=self.orderForZtoA).place(x=30, y=450)
+        self.button = tk.Button(self, height=2, width=50, text="Ascending Order", command=self.ascendingOrder).place(x=30, y=500)
+        self.button = tk.Button(self, height=2, width=50, text="Descending Order", command=self.descendingOrder).place(x=30, y=550)
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
+
+        dict = eachSectorTotalAmtProcurementDefault("government-procurement-via-gebiz.csv")
+
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
 
 
+""""---------------------------------------Function 4---------------------------------------------------------------"""
+class Function4Page(tk.Frame):
+
+    def regAwardOrderForAtoZ(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = reg_company_awardAtoZ(supplierNameList, companyNameList, awardList)
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def regAwardOrderForZtoA(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = reg_company_awardZtoA(supplierNameList, companyNameList, awardList)
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def nonRegAwardOrderForAtoZ(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = nonreg_company_awardAtoZ(supplierNameList, companyNameList, awardList)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def nonRegAwardOrderForZtoA(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = nonreg_company_awardZtoA(supplierNameList, companyNameList, awardList)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def top5Companies(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = top5_company(reg_award, nonreg_award)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def regCompanyHighAmtOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = sort_high_amt(reg_award)
+        print dict
+        for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def regCompanyLowAmtOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = sort_low_amt(reg_award)
+        print dict
+        for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def nonRegCompanyHighAmtOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = sort_high_amt(nonreg_award)
+        print dict
+        for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    def nonRegCompanyLowAmtOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = sort_low_amt(nonreg_award)
+        print dict
+        for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+    """def regCompanyYrOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = reg_yr_award(supplierNameList, companyNameList ,awardList, date)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def nonregCompanyYrOrder(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = nonreg_yr_award(supplierNameList, companyNameList ,awardList, date)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)"""
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        """above codes are important"""
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100, command=lambda: controller.show_frame("PageTwo"), fg='black', width=20)
+        self.button.place(x=30, y=900)
+
+        # Header for the Page
+        self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="Function 4")
+        self.label.pack(fill="x")
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+        self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=250)
+        self.button = tk.Button(self, height=2, width=50, text="Registered Award in Order A-Z", command=self.regAwardOrderForAtoZ).place(x=30, y=300)
+        self.button = tk.Button(self, height=2, width=50, text="Registered Award in Order Z-A", command=self.regAwardOrderForZtoA).place(x=30, y=350)
+
+        self.button = tk.Button(self, height=2, width=50, text="Non-Registered Award in Order A-Z", command=self.nonRegAwardOrderForAtoZ).place(x=30, y=400)
+        self.button = tk.Button(self, height=2, width=50, text="Non-Registered Award in Order Z-A", command=self.nonRegAwardOrderForZtoA).place(x=30, y=450)
+
+        self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION", fg="red").place(x=140, y=500)
+        self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Highest Value Order", command=self.regCompanyHighAmtOrder).place(x=30, y=550)
+        self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Lowest Value Order", command=self.regCompanyLowAmtOrder).place(x=30, y=600)
+        self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Highest Value Order", command=self.nonRegCompanyHighAmtOrder).place(x=30, y=650)
+        self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Lowest Value Order", command=self.nonRegCompanyLowAmtOrder).place(x=30, y=700)
+
+        """self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Year Order", command=self.regCompanyYrOrder).place(x=30, y=750)
+        self.button = tk.Button(self, height=2, width=50, text="OF - Non- Register Company in Year Order", command=self.nonregCompanyYrOrder).place(x=30, y=800)"""
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
+
+        dict = reg_company_awardAtoZ(supplierNameList, companyNameList, awardList)
+
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+""""---------------------------------------Function 5---------------------------------------------------------------"""
+class Function5Page(tk.Frame):
+
+    def top5Companies(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = top5_company(reg_award, nonreg_award)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def top5ByYear2015(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = top5_company(reg_award, nonreg_award)
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        """above codes are important"""
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100, command=lambda: controller.show_frame("PageTwo"), fg='black', width=20)
+        self.button.place(x=30, y=900)
+
+        # Header for the Page
+        self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="Function 5")
+        self.label.pack(fill="x")
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+        self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=250)
+        self.button = tk.Button(self, height=2, width=50, text="Top 5 Companies", command=self.top5Companies).place(x=30, y=300)
+
+        #self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION", fg="red").place(x=140, y=500)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Highest Value Order", command=self.regCompanyHighAmtOrder).place(x=30, y=550)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Lowest Value Order", command=self.regCompanyLowAmtOrder).place(x=30, y=600)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Highest Value Order", command=self.nonRegCompanyHighAmtOrder).place(x=30, y=650)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Lowest Value Order", command=self.nonRegCompanyLowAmtOrder).place(x=30, y=700)
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
+
+        dict = top5_company(reg_award, nonreg_award)
+
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
+
+""""---------------------------------------Function 6---------------------------------------------------------------"""
+class Function6Page(tk.Frame):
+
+    def eachGovAgencySpending(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = function6('government-procurement-via-gebiz.csv', 'Categorize_Agency.csv')
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def eachGovAgencySpending(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = function6('government-procurement-via-gebiz.csv', 'Categorize_Agency.csv')
+        print dict
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        """above codes are important"""
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100, command=lambda: controller.show_frame("PageTwo"), fg='black', width=20)
+        self.button.place(x=30, y=900)
+
+        # Header for the Page
+        self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="Function 6")
+        self.label.pack(fill="x")
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+        self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=250)
+        self.button = tk.Button(self, height=2, width=50, text="Categorize Each Government Agency Spending", command=self.eachGovAgencySpending).place(x=30, y=300)
+
+        self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION").place(x=140, y=500)
+        self.button = tk.Button(self, height=2, width=50, text="Categorize Each Government Agency Spending", command=self.eachGovAgencySpending).place(x=30, y=550)
+
+        #self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION", fg="red").place(x=140, y=500)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Highest Value Order", command=self.regCompanyHighAmtOrder).place(x=30, y=550)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Lowest Value Order", command=self.regCompanyLowAmtOrder).place(x=30, y=600)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Highest Value Order", command=self.nonRegCompanyHighAmtOrder).place(x=30, y=650)
+        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Lowest Value Order", command=self.nonRegCompanyLowAmtOrder).place(x=30, y=700)
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
+
+        dict = top5_company(reg_award, nonreg_award)
+
+        for values in dict.items():
+            # for values in dict:
+            self.treeView.insert("", 'end', values=values)
 
 if __name__ == "__main__":
     app = SampleApp()
