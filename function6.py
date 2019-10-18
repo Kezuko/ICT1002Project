@@ -1,12 +1,14 @@
-def function6(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categorize_Agency.csv'):
+import csv
+
+def function6(csv_file1, csv_file2):
     """Returns a dictionary in this format {<agency_name1> : <amount_spent1> , <agency_name2> : <amount_spent2> , .....}
         Amount spent is not rounded off"""
-    
-    records = {} #stores <agency_name> : <procurement amount>
-    categorize_agency_spending = {} #categorises the agency's spending
-    categorize_agency_list = [] #stores agency names
-    
-    f1 = open(csv_file1,'rb')
+
+    records = {}  # stores <agency_name> : <procurement amount>
+    categorize_agency_spending = {}  # categorises the agency's spending
+    categorize_agency_list = []  # stores agency names
+
+    f1 = open(csv_file1, 'rb')
     reader1 = csv.reader(f1, delimiter=',')
     header = False
 
@@ -22,8 +24,8 @@ def function6(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categ
             header = True
     f1.close()
 
-    #open csv_file2 and looks for the agency in the records dictionary and adds the amount to categorize_agency_spending dictionary
-    f2 = open(csv_file2,'rb')
+    # open csv_file2 and looks for the agency in the records dictionary and adds the amount to categorize_agency_spending dictionary
+    f2 = open(csv_file2, 'rb')
     reader2 = csv.reader(f2, delimiter=',')
     header = False
 
@@ -47,3 +49,5 @@ def function6(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categ
                 categorize_agency_list.append(i)
     f2.close()
     return categorize_agency_spending
+
+print function6('government-procurement-via-gebiz.csv', 'Categorize_Agency.csv')
