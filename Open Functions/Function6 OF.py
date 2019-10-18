@@ -111,30 +111,8 @@ def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='
 
 
     elif choice == "3":
-        sb_list = generate_sb_list()
-        dd_list = generate_dd_list()
-        
-        #Temporary Menu
-        print "Press '1' or '2' to select category"
-        print "1. SB"
-        print "2. DD"
-        choice = raw_input()
-
-        if choice == '1':
-            #Temporary menu
-            print "Select from the list of SB"
-            for i in range(len(sb_list)):
-                print str(i+1) + " " + sb_list[i]
-
-            choice = raw_input()
-            print "Spending by {0} is: {1}".format(sb_list[int(choice)-1], records[sb_list[int(choice)-1]])
-
-        elif choice == '2':
-            #Temporary menu
-            print "Select from the list of DD"
-            for i in range(len(dd_list)):
-                print str(i+1) + " " + dd_list[i]
-
-            choice = raw_input()
-            print "Spending by {0} is: {1}".format(dd_list[int(choice)-1], records[dd_list[int(choice)-1]])
+        print 'Agency'.ljust(100) + 'Amount Spent'.rjust(50)
+        print '-' * 150
+        for key in records:
+            print key.ljust(100) + str(records[key]).rjust(50)
             
