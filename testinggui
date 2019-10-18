@@ -3,6 +3,7 @@
 import Tkinter as tk     # python 2
 import tkFont as tkfont  # python 2
 import tkFileDialog as fd
+from PIL import ImageTk, Image
 
 
 def get_file_name(file_entry):
@@ -16,6 +17,12 @@ class SampleApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+
+        image = Image.open('pythonbackground.png')
+        photo = ImageTk.PhotoImage(image)
+        label = tk.Label(self, image=photo)
+        label.image = photo  # keep a reference!
+        label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
@@ -103,23 +110,37 @@ class PageTwo(tk.Frame):
         self.controller = controller
         """above codes are important"""
 
-        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="FUNCTION SELECTION")
+        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="OPEN FUNCTION")
         label.pack(fill="x")
 
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"), fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
+        button = tk.Button(self, text="Function 2", height=2, font=100,
+                           command=lambda: controller.show_frame("StartPage"), fg='black', width=50)
+        button.place(x=30, y=400)
+
+        button = tk.Button(self, text="Function 3", height=2, font=100,
+                           command=lambda: controller.show_frame("StartPage"),
+                           fg='black', width=50)
+        button.place(x=30, y=460)
+
+        button = tk.Button(self, text="Function 4", height=2, font=100,
+                           command=lambda: controller.show_frame("StartPage"),
+                           fg='black', width=50)
+        button.place(x=30, y=520)
+
+        button = tk.Button(self, text="Function 5", height=2, font=100,
+                           command=lambda: controller.show_frame("StartPage"),
+                           fg='black', width=50)
+        button.place(x=30, y=580)
+
+        button = tk.Button(self, text="Function 6", height=2, font=100,
+                           command=lambda: controller.show_frame("StartPage"),
+                           fg='black', width=50)
+        button.place(x=30, y=640)
+
+        button = tk.Button(self, text="GO TO OPEN FUNCTION", height=2, font=100,
+                           command=lambda: controller.show_frame("PageThree"),
+                           fg='red', width=50)
+        button.place(x=30, y=700)
 
 
 class PageThree(tk.Frame):
@@ -129,28 +150,18 @@ class PageThree(tk.Frame):
         self.controller = controller
         """above codes are important"""
 
-        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="OPEN FUNCTION")
-        label.pack(fill="x")
-
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"), fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"),
-                           fg='blue')
-        button.pack(side="left")
 
 
 if __name__ == "__main__":
     app = SampleApp()
     app.title("ICT1002 PROJECT")
-    #app.iconbitmap(r'sitlogo_Ncr_icon.ico')
+    app.iconbitmap(r'sitlogo_Ncr_icon.ico')
+
+    """image = Image.open('pythonbackground.png')
+    photo = ImageTk.PhotoImage(image)
+    label = tk.Label(app, image=photo)
+    label.image = photo  # keep a reference!
+    label.pack(fill="both", expand="yes")"""
+
     app.state("zoomed")
     app.mainloop()
