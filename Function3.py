@@ -55,7 +55,7 @@ def eachSectorTotalAmtProcurementAsc(csv_file):
     f.close()
     
     # Sorts the records in ascending order and return result
-    recordAsc = sorted(records.values())
+    recordAsc = sorted(records.items(), key=lambda kv: kv[1])
     return recordAsc
 
 
@@ -85,7 +85,7 @@ def eachSectorTotalAmtProcurementDsc(csv_file):
     f.close()
     
     # Sorts the records in descending order and return result
-    recordDsc = sorted(records.values(), reverse=True)
+    recordDsc = sorted(records.items(), reverse=True, key=lambda kv: kv[1])
     return recordDsc
 
 # Test print results of function
