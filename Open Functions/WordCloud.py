@@ -68,11 +68,12 @@ with open('WorldCloudUsage.csv', 'rb') as f:
     reader = csv.reader(f)
     your_list = '\t'.join([i[0] for i in reader])
 
-# lower max_font_size for the Wordcloud image
+# lower max_font_size for the Wordcloud image and generate it
 wordcloud = WordCloud(background_color='white', max_font_size=40).generate(your_list)
 plt.figure()
 plt.imshow(wordcloud, interpolation="bilinear")
 plt.axis("off")
+wordcloud.to_file('WordCloud.png') #Save the figure into the folder
 plt.show()
 
 # The pil way (if you don't have matplotlib)
