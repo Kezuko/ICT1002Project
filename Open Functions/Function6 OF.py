@@ -78,7 +78,7 @@ def generate_dd_list(csv_file='Categorize_Agency.csv'):
     
     return dd_list
 
-def open_function1(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categorize_Agency.csv'):
+def eachDDSBspending(csv_file1='government-procurement-via-gebiz.csv', csv_file2='Categorize_Agency.csv'):
     """Takes in raw_input() from user to view DB/SS/Total spendings
         Calls generate__all_spending_records() to generate a records dictionary
         Calls generate_sb_list()
