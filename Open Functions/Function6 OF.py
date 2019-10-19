@@ -111,8 +111,12 @@ def eachDDSBspending(csv_file1='government-procurement-via-gebiz.csv', csv_file2
 
 
     elif choice == "3":
-        print 'Agency'.ljust(100) + 'Amount Spent'.rjust(50)
-        print '-' * 150
-        for key in records:
-            print key.ljust(100) + str(records[key]).rjust(50)
+        type = 'DD' #change this to either DD or SB
+        if type == 'DD':
+            lst = generate_dd_list()
+        else:
+            lst = generate_sb_list()
+            
+       for i in lst:
+            print i.ljust(150) + str(records[i])
             
