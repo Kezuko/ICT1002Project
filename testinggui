@@ -4,6 +4,7 @@ import Tkinter as tk     # python 2
 import ttk
 from function4 import *
 from Function3 import *
+from Function3OF import *
 from function6 import *
 from function6OF import *
 import tkFont as tkfont  # python 2
@@ -341,7 +342,6 @@ class Function3Page(tk.Frame):
         except:
             self.treeView2.destroy()
 
-
         # Set up of TreeView
         self.treeView2 = ttk.Treeview(self, height=35)
         # set up the columns and headings
@@ -357,22 +357,22 @@ class Function3Page(tk.Frame):
         self.treeView2.heading("TenderDetailStatus", text="Tender Detail Status")
         self.treeView2.heading("SuppName", text="Supplier Name")
         self.treeView2.grid(columnspan=7)
-        self.treeView2.column("TenderDes", minwidth=0, width=480, stretch="no")
-        self.treeView2.column("TenderNo", minwidth=0, width=200, stretch="no")
-        self.treeView2.column("Agency", minwidth=0, width=200, stretch="no")
-        self.treeView2.column("AwardAmt", minwidth=0, width=200, stretch="no")
-        self.treeView2.column("AwardDate", minwidth=0, width=200, stretch="no")
-        self.treeView2.column("TenderDetailStatus", minwidth=0, width=200, stretch="no")
-        self.treeView2.column("SuppName", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDes", minwidth=0, width=300, stretch="no")
+        self.treeView2.column("TenderNo", minwidth=0, width=100, stretch="no")
+        self.treeView2.column("Agency", minwidth=0, width=100, stretch="no")
+        self.treeView2.column("AwardAmt", minwidth=0, width=150, stretch="no")
+        self.treeView2.column("AwardDate", minwidth=0, width=100, stretch="no")
+        self.treeView2.column("TenderDetailStatus", minwidth=0, width=150, stretch="no")
+        self.treeView2.column("SuppName", minwidth=0, width=100, stretch="no")
 
-        self.treeView2.place(x=1000, y=200)
+        self.treeView2.place(x=700, y=200)
         vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
         vsb.place(x=1685, y=200, height=730)
         self.treeView2.configure(yscrollcommand=vsb.set)
 
-        dict = extract_supplier_not_na_2016()
-        for values in dict.items():
-            self.treeView2.insert("", 'end', values=values)
+        dict = searchTenderIdNo('userinput')
+        for values in dict:
+            self.treeView.insert("", 'end', values=values)
 
     def openFunction2(self):
         try:
@@ -488,6 +488,7 @@ class Function3Page(tk.Frame):
         self.button = tk.Button(self, height=2, width=50, text="Original Order Z-A", command=self.orderForZtoA).place(x=30, y=450)
         self.button = tk.Button(self, height=2, width=50, text="Ascending Order", command=self.ascendingOrder).place(x=30, y=500)
         self.button = tk.Button(self, height=2, width=50, text="Descending Order", command=self.descendingOrder).place(x=30, y=550)
+        self.button = tk.Button(self, height=2, width=50, text="TEST", command=self.openFunction1).place(x=30, y=600)
         self.treeView.place(x=1000, y=200)
         vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
         vsb.place(x=1685, y=200, height=730)
