@@ -5,9 +5,11 @@ import ttk
 from function4 import *
 from Function3 import *
 from function6 import *
+from function6OF import *
 import tkFont as tkfont  # python 2
 import tkFileDialog as fd
-import pandas as pd
+import os
+from tkinter.messagebox import showinfo
 from top5byYear import *
 from procurementbyYear import *
 from PIL import ImageTk, Image
@@ -40,7 +42,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, PageTwo, Function3Page, Function4Page, Function5Page, Function6Page):
+        for F in (PageOne, PageTwo, Function2Page, Function3Page, Function4Page, Function5Page, Function6Page):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -50,7 +52,7 @@ class SampleApp(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
+        self.show_frame("PageOne")
 
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''
@@ -58,7 +60,7 @@ class SampleApp(tk.Tk):
         frame.tkraise()
 
 
-class StartPage(tk.Frame):
+"""class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -77,7 +79,7 @@ class StartPage(tk.Frame):
         button3.pack()
         button4.pack()
         button5.pack()
-        button6.pack()
+        button6.pack()"""
 
 
 class PageOne(tk.Frame):
@@ -112,8 +114,9 @@ class PageOne(tk.Frame):
         button = tk.Button(self, text="Browse...", width=10, height=2, command=lambda: get_file_name(entry_csv2))
         button.place(x=1000, y=490)
 
-        #button = tk.Button(self, text="Upload", command=run_and_close, width=10, height=2)
-        #button.place(x=1250, y=430)
+        button = tk.Button(self, text="Upload", command=lambda: controller.show_frame("PageTwo"), width=10, height=2)
+        button.place(x=1250, y=430)
+
 
 
 class PageTwo(tk.Frame):
@@ -123,54 +126,151 @@ class PageTwo(tk.Frame):
         self.controller = controller
         """above codes are important"""
 
-        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="OPEN FUNCTION")
+        label = tk.Label(self, bg="#64dd17", height=10, font=30, text="ICT 1002")
         label.pack(fill="x")
 
         button = tk.Button(self, text="Function 2", height=2, font=100,
-                           command=lambda: controller.show_frame("StartPage"), fg='black', width=50)
-        button.place(x=30, y=400)
+                           command=lambda: controller.show_frame("Function2Page"), fg='black', width=50)
+        button.place(x=750, y=400)
 
         button = tk.Button(self, text="Function 3", height=2, font=100,
                            command=lambda: controller.show_frame("Function3Page"),
                            fg='black', width=50)
-        button.place(x=30, y=460)
+        button.place(x=750, y=460)
 
         button = tk.Button(self, text="Function 4", height=2, font=100,
                            command=lambda: controller.show_frame("Function4Page"),
                            fg='black', width=50)
-        button.place(x=30, y=520)
+        button.place(x=750, y=520)
 
         button = tk.Button(self, text="Function 5", height=2, font=100,
                            command=lambda: controller.show_frame("Function5Page"),
                            fg='black', width=50)
-        button.place(x=30, y=580)
+        button.place(x=750, y=580)
 
         button = tk.Button(self, text="Function 6", height=2, font=100,
-                           command=lambda: controller.show_frame("StartPage"),
+                           command=lambda: controller.show_frame("Function6Page"),
                            fg='black', width=50)
-        button.place(x=30, y=640)
-
-        button = tk.Button(self, text="GO TO OPEN FUNCTION", height=2, font=100,
-                           command=lambda: controller.show_frame("PageThree"),
-                           fg='red', width=50)
-        button.place(x=30, y=700)
+        button.place(x=750, y=640)
 
 
+""""---------------------------------------Function 2---------------------------------------------------------------"""
+class Function2Page(tk.Frame):
 
+
+    def WorldCloudFunction(self):
+        os.system('python WorldCloud-Terence.py')
+        self.image = Image.open('WordCloud.png')
+        self.image = self.image.resize((600, 350))
+        self.photo = ImageTk.PhotoImage(self.image)
+        self.image1location = tk.Label(app, image=self.photo)
+        self.image1location.image = self.photo  # keep a reference!
+        self.image1location.place(x=680, y= 600)
+
+        self.label1 = tk.Label(app, text="*Please check your folder for a clearer image*")
+        self.label1.place(x=850, y=450)
+
+    def machineLearningFunction(self):
+        os.system('python LDA-Terence.py')
+
+        self.image = Image.open('MostCommonWord.png')
+        self.image = self.image.resize((600, 400))
+        self.photo = ImageTk.PhotoImage(self.image)
+        self.image2location = tk.Label(app, image=self.photo)
+        self.image2location.image = self.photo  # keep a reference!
+        self.image2location.place(x=680, y=550)
+
+        self.label2 = tk.Label(app, text="Please check your folder and open a HTML document call ldavis_prepared_5 for the open function")
+        self.label2.place(x=750, y=450)
+        self.label3 = tk.Label(app, text="The graph below is 10 most common words in Tender Description after cleansing Techniques")
+        self.label3.place(x=750, y=500)
+
+    def testing(self):
+        self.controller.show_frame("PageTwo")
+        self.image1location.destroy()
+        self.label1.destroy()
+
+        self.image2location.destroy()
+        self.label2.destroy()
+        self.label3.destroy()
+
+
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        """above codes are important"""
+
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100, command=self.testing, fg='black', width=20)
+        self.button.place(x=30, y=900)
+
+        self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="ICT 1002")
+        self.label.pack(fill="x")
+
+        self.button = tk.Button(self, text="LDA (Topic MODELLING)", height=2, font=100, command=self.machineLearningFunction, fg='black', width=50)
+        self.button.place(x=750, y=350)
+
+        self.button = tk.Button(self, text="WORDCLOUD", height=2, font=100, command=self.WorldCloudFunction, fg='black', width=50)
+        self.button.place(x=750, y=400)
+
+
+
+""""---------------------------------------Function 3---------------------------------------------------------------"""
 class Function3Page(tk.Frame):
 
     def orderForAtoZ(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
 
         dict = eachSectorTotalAmtProcurementAtoZ("government-procurement-via-gebiz.csv")
+
         for values in dict.items():
             # for values in dict:
             self.treeView.insert("", 'end', values=values)
 
     def orderForZtoA(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
 
         dict = eachSectorTotalAmtProcurementZtoA("government-procurement-via-gebiz.csv")
         for values in dict.items():
@@ -178,8 +278,28 @@ class Function3Page(tk.Frame):
             self.treeView.insert("", 'end', values=values)
 
     def ascendingOrder(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
 
         dict = eachSectorTotalAmtProcurementAsc("government-procurement-via-gebiz.csv")
         print dict
@@ -187,23 +307,166 @@ class Function3Page(tk.Frame):
             self.treeView.insert("", 'end', values=values)
 
     def descendingOrder(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
 
         dict = eachSectorTotalAmtProcurementDsc("government-procurement-via-gebiz.csv")
         print dict
         for values in dict.items():
             self.treeView.insert("", 'end', values=values)
 
+    def openFunction1(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["TenderDes", "TenderNo", "Agency", "AwardAmt", "AwardDate", "TenderDetailStatus", "SuppName"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("TenderDes", text="Tender Description")
+        self.treeView2.heading("TenderNo", text="Tender No.")
+        self.treeView2.heading("Agency", text="Agency")
+        self.treeView2.heading("AwardAmt", text="Awarded Amount")
+        self.treeView2.heading("AwardDate", text="Awarded Date")
+        self.treeView2.heading("TenderDetailStatus", text="Tender Detail Status")
+        self.treeView2.heading("SuppName", text="Supplier Name")
+        self.treeView2.grid(columnspan=7)
+        self.treeView2.column("TenderDes", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("TenderNo", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("Agency", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardAmt", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardDate", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDetailStatus", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("SuppName", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2016()
+        for values in dict.items():
+            self.treeView2.insert("", 'end', values=values)
+
+    def openFunction2(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["UniqueID", "TenderDes", "TenderNo", "Agency", "AwardAmt", "AwardDate", "TenderDetailStatus", "SuppName"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("UniqueID", text="ID No.")
+        self.treeView2.heading("TenderDes", text="Tender Description")
+        self.treeView2.heading("TenderNo", text="Tender No.")
+        self.treeView2.heading("Agency", text="Agency")
+        self.treeView2.heading("AwardAmt", text="Awarded Amount")
+        self.treeView2.heading("AwardDate", text="Awarded Date")
+        self.treeView2.heading("TenderDetailStatus", text="Tender Detail Status")
+        self.treeView2.heading("SuppName", text="Supplier Name")
+        self.treeView2.grid(columnspan=8)
+        self.treeView2.column("UniqueID", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDes", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("TenderNo", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("Agency", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardAmt", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardDate", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDetailStatus", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("SuppName", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2016()
+        for values in dict.items():
+            self.treeView2.insert("", 'end', values=values)
+
+    def openFunction3(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["UniqueID", "TenderDes", "TenderNo", "Agency", "AwardAmt", "AwardDate", "TenderDetailStatus", "SuppName"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("UniqueID", text="ID No.")
+        self.treeView2.heading("TenderDes", text="Tender Description")
+        self.treeView2.heading("TenderNo", text="Tender No.")
+        self.treeView2.heading("Agency", text="Agency")
+        self.treeView2.heading("AwardAmt", text="Awarded Amount")
+        self.treeView2.heading("AwardDate", text="Awarded Date")
+        self.treeView2.heading("TenderDetailStatus", text="Tender Detail Status")
+        self.treeView2.heading("SuppName", text="Supplier Name")
+        self.treeView2.grid(columnspan=8)
+        self.treeView2.column("UniqueID", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDes", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("TenderNo", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("Agency", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardAmt", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("AwardDate", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("TenderDetailStatus", minwidth=0, width=200, stretch="no")
+        self.treeView2.column("SuppName", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2016()
+        for values in dict.items():
+            self.treeView2.insert("", 'end', values=values)
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
         """above codes are important"""
-        self.button = tk.Button(self, text="Back to Menu", height=2, font=100,
-                           command=lambda: controller.show_frame("PageTwo"),
-                           fg='black', width=20)
+        self.button = tk.Button(self, text="Back to Menu", height=2, font=100, command=lambda: controller.show_frame("PageTwo"), fg='black', width=20)
         self.button.place(x=30, y=900)
+
+        #User Input for open function
+        self.canvas1 = tk.Canvas(self, width=400, height=300, relief='raised')
+        self.canvas1.place(x=30, y=700)
+        self.userInput = tk.Entry(self, width=50)
+        self.canvas1.create_window(200, 140, window=self.userInput)
 
         #Header for the Page
         self.label = tk.Label(self, bg="#64dd17", height=10, font=30, text="Function 3")
@@ -393,22 +656,118 @@ class Function4Page(tk.Frame):
 class Function5Page(tk.Frame):
 
     def top5Companies(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView.pack(expand="no", fill="both")
+        self.treeView["columns"] = ["CompanyName", "AwardedAmount"]
+        self.treeView["show"] = "headings"
+        self.treeView.heading("CompanyName", text="Company Name")
+        self.treeView.heading("AwardedAmount", text="Awarded Amount")
+        self.treeView.grid(columnspan=2)
+        self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
+        self.treeView.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView.configure(yscrollcommand=vsb.set)
 
         dict = top5_company(reg_award, nonreg_award)
-        print dict
+
         for values in dict.items():
+            # for values in dict:
             self.treeView.insert("", 'end', values=values)
 
-    def top5ByYear2015(self):
-        for i in self.treeView.get_children():
-            self.treeView.delete(i)
+    def companyBy2015(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
 
-        dict = top5_company(reg_award, nonreg_award)
-        print dict
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["CompanyName", "AwardedYear"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("CompanyName", text="Company Name")
+        self.treeView2.heading("AwardedYear", text="Awarded Year")
+        self.treeView2.grid(columnspan=2)
+        self.treeView2.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("AwardedYear", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2015()
         for values in dict.items():
-            self.treeView.insert("", 'end', values=values)
+            self.treeView2.insert("", 'end', values=values)
+
+    def companyBy2016(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["CompanyName", "AwardedYear"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("CompanyName", text="Company Name")
+        self.treeView2.heading("AwardedYear", text="Awarded Year")
+        self.treeView2.grid(columnspan=2)
+        self.treeView2.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("AwardedYear", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2016()
+        for values in dict.items():
+            self.treeView2.insert("", 'end', values=values)
+
+    def companyBy2017(self):
+        try:
+            self.treeView.destroy()
+        except:
+            self.treeView2.destroy()
+
+        # Set up of TreeView
+        self.treeView2 = ttk.Treeview(self, height=35)
+        # set up the columns and headings
+        # In reality "Member ID" would be exported from the database
+        self.treeView2.pack(expand="no", fill="both")
+        self.treeView2["columns"] = ["CompanyName", "AwardedYear"]
+        self.treeView2["show"] = "headings"
+        self.treeView2.heading("CompanyName", text="Company Name")
+        self.treeView2.heading("AwardedYear", text="Awarded Year")
+        self.treeView2.grid(columnspan=2)
+        self.treeView2.column("CompanyName", minwidth=0, width=480, stretch="no")
+        self.treeView2.column("AwardedYear", minwidth=0, width=200, stretch="no")
+
+        self.treeView2.place(x=1000, y=200)
+        vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView2.yview)
+        vsb.place(x=1685, y=200, height=730)
+        self.treeView2.configure(yscrollcommand=vsb.set)
+
+        dict = extract_supplier_not_na_2017()
+        for values in dict.items():
+            self.treeView2.insert("", 'end', values=values)
 
 
     def __init__(self, parent, controller):
@@ -435,14 +794,14 @@ class Function5Page(tk.Frame):
         self.treeView.grid(columnspan=2)
         self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
         self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
+
         self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=250)
         self.button = tk.Button(self, height=2, width=50, text="Top 5 Companies", command=self.top5Companies).place(x=30, y=300)
 
-        #self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION", fg="red").place(x=140, y=500)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Highest Value Order", command=self.regCompanyHighAmtOrder).place(x=30, y=550)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Lowest Value Order", command=self.regCompanyLowAmtOrder).place(x=30, y=600)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Highest Value Order", command=self.nonRegCompanyHighAmtOrder).place(x=30, y=650)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Lowest Value Order", command=self.nonRegCompanyLowAmtOrder).place(x=30, y=700)
+        self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION").place(x=130, y=350)
+        self.button = tk.Button(self, height=2, width=50, text="Company By 2015", command=self.companyBy2015).place(x=30, y=400)
+        self.button = tk.Button(self, height=2, width=50, text="Company By 2016", command=self.companyBy2016).place(x=30, y=450)
+        self.button = tk.Button(self, height=2, width=50, text="Company By 2017", command=self.companyBy2017).place(x=30, y=500)
 
         self.treeView.place(x=1000, y=200)
         vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
@@ -467,12 +826,21 @@ class Function6Page(tk.Frame):
         for values in dict.items():
             self.treeView.insert("", 'end', values=values)
 
-    def eachGovAgencySpending(self):
+    def generateSBList(self):
         for i in self.treeView.get_children():
             self.treeView.delete(i)
 
-        dict = function6('government-procurement-via-gebiz.csv', 'Categorize_Agency.csv')
-        print dict
+        dict = generate_sb_list('Categorize_Agency.csv')
+
+        for values in dict.items():
+            self.treeView.insert("", 'end', values=values)
+
+    def generateDDList(self):
+        for i in self.treeView.get_children():
+            self.treeView.delete(i)
+
+        dict = generate_dd_list('Categorize_Agency.csv')
+
         for values in dict.items():
             self.treeView.insert("", 'end', values=values)
 
@@ -501,17 +869,13 @@ class Function6Page(tk.Frame):
         self.treeView.grid(columnspan=2)
         self.treeView.column("CompanyName", minwidth=0, width=480, stretch="no")
         self.treeView.column("AwardedAmount", minwidth=0, width=200, stretch="no")
-        self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=250)
-        self.button = tk.Button(self, height=2, width=50, text="Categorize Each Government Agency Spending", command=self.eachGovAgencySpending).place(x=30, y=300)
+        self.label = tk.Label(self, height=2, font=30, text="NORMAL FUNCTION").place(x=130,y=350)
+        self.button = tk.Button(self, height=2, width=50, text="Categorize Each Government Agency Spending", command=self.eachGovAgencySpending).place(x=30, y=400)
 
         self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION").place(x=140, y=500)
-        self.button = tk.Button(self, height=2, width=50, text="Categorize Each Government Agency Spending", command=self.eachGovAgencySpending).place(x=30, y=550)
+        self.button = tk.Button(self, height=2, width=50, text="Display All SB", command=self.generateSBList).place(x=30, y=550)
+        self.button = tk.Button(self, height=2, width=50, text="Display All DD", command=self.generateDDList).place(x=30, y=600)
 
-        #self.label = tk.Label(self, height=2, font=30, text="OPEN FUNCTION", fg="red").place(x=140, y=500)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Highest Value Order", command=self.regCompanyHighAmtOrder).place(x=30, y=550)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Register Company in Lowest Value Order", command=self.regCompanyLowAmtOrder).place(x=30, y=600)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Highest Value Order", command=self.nonRegCompanyHighAmtOrder).place(x=30, y=650)
-        #self.button = tk.Button(self, height=2, width=50, text="OF - Non-Register Company in Lowest Value Order", command=self.nonRegCompanyLowAmtOrder).place(x=30, y=700)
 
         self.treeView.place(x=1000, y=200)
         vsb = ttk.Scrollbar(self, orient="vertical", command=self.treeView.yview)
