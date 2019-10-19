@@ -4,36 +4,38 @@ from datetime import datetime
 
 def searchTenderIdNo(idNo, csv_file):
     # Creates list to store data
-    tenderNo = []
-    agency = []
-    tenderDescription = []
-    awardDate = []
-    tenderDetailStatus = []
-    supplierName = []
-    awardedAmt = []
-    
+    tenderNo = ""
+    agency = ""
+    tenderDescription = ""
+    awardDate = ""
+    tenderDetailStatus = ""
+    supplierName = ""
+    awardedAmt = ""
+
     # Opens the CSV file
-    f = open(csv_file, 'rb')
+    f = open("government-procurement-via-gebiz.csv", 'rb')
     reader = csv.reader(f, delimiter=',')
-    found = False
-    
+    header = False
+
     # Iterates through the CSV file, identify the user defined Tender ID no. and store in list
     for row in reader:
-        tender = row[0]
-        if tender == idNo:
-            tenderNo.append(str(row[0]))
-            agency.append(str(row[1]))
-            tenderDescription.append(str(row[2]))
-            awardDate.append(str(row[3]))
-            tenderDetailStatus.append(str(row[4]))
-            supplierName.append(str(row[5]))
-            awardedAmt.append(str(row[6]))
-            break  # leave for loop
-    else:
-        found = True
+        if header:
+            tender_no = row[0]
+            if tender_no == idNo:
+                tenderNo = row[0]
+                agency = row[1]
+                tenderDescription = row[2]
+                awardDate = row[3]
+                tenderDetailStatus = row[4]
+                supplierName = row[5]
+                awardedAmt = row[6]
+                break  # leave for loop
+
+        else:
+            header = True
 
     f.close()
-    
+
     # Return results in the following format
     searchReturn = {
         "Tender No.": tenderNo,
