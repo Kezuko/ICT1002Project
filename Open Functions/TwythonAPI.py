@@ -27,4 +27,4 @@ def twitterAPI():
     twythonFinalOutput = dict(zip(statusesText, result_list))
     print twythonFinalOutput
 
-twitterAPI()
+#twitterAPI()
