@@ -37,5 +37,3 @@ def newsAPI():
 
     finalOutput = dict(zip(titlelist, urlList))
     print finalOutput
-
-newsAPI()
