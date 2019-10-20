@@ -1,9 +1,41 @@
+import ttk
+import tkinter as tk
 import csv
-from datetime import datetime
+import pandas as pd
+
+root = tk.Tk()
+
+canvas1 = tk.Canvas(root, width=400, height=300, relief='raised')
+canvas1.pack()
+
+# -----------------------------------------------Titles/Labels-------------------------------------------------------#
+label1 = tk.Label(root, text='Open Function 3 (Search Function)')
+label1.config(font=('helvetica', 14))
+canvas1.create_window(200, 25, window=label1)
+
+label2 = tk.Label(root, text='Please enter and select relevant submission')
+label2.config(font=('helvetica', 10))
+canvas1.create_window(200, 100, window=label2)
 
 
-def searchTenderIdNo(idNo, csv_file):
-    # Creates list to store data
+# -----------------------------------------------UserInput-------------------------------------------------------#
+userInput1 = tk.Entry(root)
+canvas1.create_window(200, 140, window=userInput1)
+
+# -----------------------------------------------SearchByIdNo-------------------------------------------------------#
+def searchTenderIdNo():
+    global lstbox
+    try:
+        lstbox.destroy()
+    except:
+        print "none"
+
+    lstbox = tk.Listbox(root)
+    lstbox.pack()
+    lstbox.config(width=0)
+
+    idNo = userInput1.get()
+
     tenderNo = ""
     agency = ""
     tenderDescription = ""
@@ -30,7 +62,6 @@ def searchTenderIdNo(idNo, csv_file):
                 supplierName = row[5]
                 awardedAmt = row[6]
                 break  # leave for loop
-
         else:
             header = True
 
@@ -47,45 +78,81 @@ def searchTenderIdNo(idNo, csv_file):
         "Awarded Amount": awardedAmt
     }
 
-    return searchReturn
+    for key in searchReturn:
+        lstbox.insert(tk.END, '{}: {}'.format(key, searchReturn[key]))
 
 
-def searchTenderIdCode(idCode, csv_file):
-    # Opens the CSV file and locate the tender_no column
-    df = pd.read_csv(csv_file)
+# -----------------------------------------------SearchByIdCode-------------------------------------------------------#
+def searchTenderIdCo():
+    global lstbox
+    try:
+        lstbox.destroy()
+    except:
+        print "none"
+
+    lstbox = tk.Listbox(root)
+    lstbox.pack()
+    lstbox.config(width=0)
+
+    idCode = userInput1.get()
+
+    df = pd.read_csv("government-procurement-via-gebiz.csv")
     dfList = df.loc[:, ['tender_no']]
 
     # Determine and locate all rows that contains value defined by user
     results = df.loc[dfList.tender_no.str.contains(idCode)]
-    # Add an unique Id number column and assign to each row
+
+    # Adds an unique Id number column and assign to each row
     results = results.assign(id_no=[i for i in xrange(len(results))])[['id_no'] + results.columns.tolist()]
 
     # Return results with index set and as a dictionary
     myDR = results.set_index('id_no').T.to_dict('list')
 
-    return myDR
+    for key in myDR:
+        lstbox.insert(tk.END, '{}: {}'.format(key, myDR[key]))
 
 
-def searchDateRange(startDate, endDate, csv_file):
-    # Opens the CSV file and locate the award_date column
-    df = pd.read_csv(csv_file, parse_dates=True)
+# -----------------------------------------------SearchByIdCode-------------------------------------------------------#
+def searchByDate():
+    global lstbox
+    try:
+        lstbox.destroy()
+    except:
+        print "none"
+
+    lstbox = tk.Listbox(root)
+    lstbox.pack()
+    lstbox.config(width=0)
+
+    startDate = userInput1.get()
+
+    df = pd.read_csv("government-procurement-via-gebiz.csv", parse_dates=True)
     dfList = df.loc[:, ['award_date']]
 
     # Convert the starting date and ending date into a datetime format
     dfList.award_date = pd.to_datetime(dfList.award_date)
 
     # Determine the values between two dates of a date column as per user defined
-    results = df.loc[(dfList.award_date > startDate) & (dfList.award_date <= endDate)]
+    results = df.loc[(dfList.award_date == startDate)]
 
     # Add an unique Id number column and assign to each row
     results = results.assign(id_no=[i for i in xrange(len(results))])[['id_no'] + results.columns.tolist()]
 
     # Return results with index set and as a dictionary
-    myDF = results.set_index('id_no').T.to_dict('list')
+    myDR = results.set_index('id_no').T.to_dict('list')
 
-    return myDF
+    for key in myDR:
+        lstbox.insert(tk.END, '{}: {}'.format(key, myDR[key]))
 
-#print searchTenderIdNo("AGO000ETT15000001", "government-procurement-via-gebiz.csv")
-#print searchTenderIdCode("AGO", "government-procurement-via-gebiz.csv")
-#print searchDateRange("2015-02-04", "2015-02-06", "government-procurement-via-gebiz.csv")
 
+# ----------------------------------------------Buttons(Submit)-------------------------------------------------------#
+button1 = tk.Button(text='Search by: Tender ID', command=searchTenderIdNo, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+canvas1.create_window(23, 180, window=button1)
+
+button2 = tk.Button(text='Search by: Tender ID Code', command=searchTenderIdCo, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+canvas1.create_window(173, 180, window=button2)
+
+button3 = tk.Button(text='Search by: Tender Date (YYYY/MM/DD)', command=searchByStartDate, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+canvas1.create_window(370, 180, window=button3)
+
+root.mainloop()
