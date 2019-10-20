@@ -2,6 +2,12 @@ import requests
 import json
 
 def newsAPI():
+
+    def jprint(obj):
+        # create a formatted string of the Python JSON object
+        text = json.dumps(obj, sort_keys=True, indent=4)
+        print(text)
+
     url = ('https://newsapi.org/v2/everything?' #API URL
            'q=procurement AND tender&' #keywords on procurement AND tender
            'sortBy=popularity&' #Sort them by popularity
@@ -17,4 +23,19 @@ def newsAPI():
     with open("NewsAPI.txt", "w") as text_file:
         json.dump(results, text_file)
 
-#newsAPI()
+    articles = response.json()['articles']
+
+    titlelist = []
+    for d in articles:
+        title = d['title']
+        titlelist.append(title)
+
+    urlList = []
+    for d in articles:
+        url = d['url']
+        urlList.append(url)
+
+    finalOutput = dict(zip(titlelist, urlList))
+    print finalOutput
+
+newsAPI()
