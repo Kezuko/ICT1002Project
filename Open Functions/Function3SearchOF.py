@@ -8,7 +8,7 @@ root = tk.Tk()
 canvas1 = tk.Canvas(root, width=400, height=300, relief='raised')
 canvas1.pack()
 
-# -----------------------------------------------Titles/Labels-------------------------------------------------------#
+# -----------------------------------------------Titles/Labels---------------------------------------------------------#
 label1 = tk.Label(root, text='Open Function 3 (Search Function)')
 label1.config(font=('helvetica', 14))
 canvas1.create_window(200, 25, window=label1)
@@ -17,18 +17,23 @@ label2 = tk.Label(root, text='Please enter and select relevant submission')
 label2.config(font=('helvetica', 10))
 canvas1.create_window(200, 100, window=label2)
 
-
-# -----------------------------------------------UserInput-------------------------------------------------------#
+# -----------------------------------------------UserInput-------------------------------------------------------------#
 userInput1 = tk.Entry(root)
 canvas1.create_window(200, 140, window=userInput1)
 
-# -----------------------------------------------SearchByIdNo-------------------------------------------------------#
+
+# -----------------------------------------------SearchByIdNo----------------------------------------------------------#
 def searchTenderIdNo():
     global lstbox
+    global scrollbar
     try:
         lstbox.destroy()
+        scrollbar.destroy()
     except:
         print "none"
+
+    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
     lstbox = tk.Listbox(root)
     lstbox.pack()
@@ -81,14 +86,22 @@ def searchTenderIdNo():
     for key in searchReturn:
         lstbox.insert(tk.END, '{}: {}'.format(key, searchReturn[key]))
 
+    lstbox.config(xscrollcommand=scrollbar.set)
+    scrollbar.config(command=lstbox.xview)
 
-# -----------------------------------------------SearchByIdCode-------------------------------------------------------#
+
+# -----------------------------------------------SearchByIdCode--------------------------------------------------------#
 def searchTenderIdCo():
     global lstbox
+    global scrollbar
     try:
         lstbox.destroy()
+        scrollbar.destroy()
     except:
         print "none"
+
+    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
     lstbox = tk.Listbox(root)
     lstbox.pack()
@@ -111,14 +124,22 @@ def searchTenderIdCo():
     for key in myDR:
         lstbox.insert(tk.END, '{}: {}'.format(key, myDR[key]))
 
+    lstbox.config(xscrollcommand=scrollbar.set)
+    scrollbar.config(command=lstbox.xview)
 
-# -----------------------------------------------SearchByIdCode-------------------------------------------------------#
+
+# -----------------------------------------------SearchByIdDate--------------------------------------------------------#
 def searchByDate():
     global lstbox
+    global scrollbar
     try:
         lstbox.destroy()
+        scrollbar.destroy()
     except:
         print "none"
+
+    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
     lstbox = tk.Listbox(root)
     lstbox.pack()
@@ -144,15 +165,21 @@ def searchByDate():
     for key in myDR:
         lstbox.insert(tk.END, '{}: {}'.format(key, myDR[key]))
 
+    lstbox.config(xscrollcommand=scrollbar.set)
+    scrollbar.config(command=lstbox.xview)
 
-# ----------------------------------------------Buttons(Submit)-------------------------------------------------------#
-button1 = tk.Button(text='Search by: Tender ID', command=searchTenderIdNo, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+
+# ----------------------------------------------Buttons(Submit)--------------------------------------------------------#
+button1 = tk.Button(text='Search by: Tender ID', command=searchTenderIdNo, bg='black', fg='white',
+                    font=('helvetica', 9, 'bold'))
 canvas1.create_window(23, 180, window=button1)
 
-button2 = tk.Button(text='Search by: Tender ID Code', command=searchTenderIdCo, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+button2 = tk.Button(text='Search by: Tender ID Code', command=searchTenderIdCo, bg='black', fg='white',
+                    font=('helvetica', 9, 'bold'))
 canvas1.create_window(173, 180, window=button2)
 
-button3 = tk.Button(text='Search by: Tender Date (YYYY/MM/DD)', command=searchByStartDate, bg='black', fg='white', font=('helvetica', 9, 'bold'))
+button3 = tk.Button(text='Search by: Tender Date (YYYY-MM-DD)', command=searchByDate, bg='black', fg='white',
+                    font=('helvetica', 9, 'bold'))
 canvas1.create_window(370, 180, window=button3)
 
 root.mainloop()
