@@ -3,22 +3,22 @@ import tkinter as tk
 import csv
 import pandas as pd
 
-root = tk.Tk()
+root2 = tk.Tk()
 
-canvas1 = tk.Canvas(root, width=400, height=300, relief='raised')
+canvas1 = tk.Canvas(root2, width=400, height=300, relief='raised')
 canvas1.pack()
 
 # -----------------------------------------------Titles/Labels---------------------------------------------------------#
-label1 = tk.Label(root, text='Open Function 3 (Search Function)')
+label1 = tk.Label(root2, text='Open Function 3 (Search Function)')
 label1.config(font=('helvetica', 14))
 canvas1.create_window(200, 25, window=label1)
 
-label2 = tk.Label(root, text='Please enter and select relevant submission')
+label2 = tk.Label(root2, text='Please enter and select relevant submission')
 label2.config(font=('helvetica', 10))
 canvas1.create_window(200, 100, window=label2)
 
 # -----------------------------------------------UserInput-------------------------------------------------------------#
-userInput1 = tk.Entry(root)
+userInput1 = tk.Entry(root2)
 canvas1.create_window(200, 140, window=userInput1)
 
 
@@ -32,10 +32,10 @@ def searchTenderIdNo():
     except:
         print "none"
 
-    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar = ttk.Scrollbar(root2, orient=tk.HORIZONTAL)
     scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
-    lstbox = tk.Listbox(root)
+    lstbox = tk.Listbox(root2)
     lstbox.pack()
     lstbox.config(width=0)
 
@@ -100,10 +100,10 @@ def searchTenderIdCo():
     except:
         print "none"
 
-    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar = ttk.Scrollbar(root2, orient=tk.HORIZONTAL)
     scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
-    lstbox = tk.Listbox(root)
+    lstbox = tk.Listbox(root2)
     lstbox.pack()
     lstbox.config(width=0)
 
@@ -138,10 +138,10 @@ def searchByDate():
     except:
         print "none"
 
-    scrollbar = ttk.Scrollbar(root, orient=tk.HORIZONTAL)
+    scrollbar = ttk.Scrollbar(root2, orient=tk.HORIZONTAL)
     scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
-    lstbox = tk.Listbox(root)
+    lstbox = tk.Listbox(root2)
     lstbox.pack()
     lstbox.config(width=0)
 
@@ -182,4 +182,4 @@ button3 = tk.Button(text='Search by: Tender Date (YYYY-MM-DD)', command=searchBy
                     font=('helvetica', 9, 'bold'))
 canvas1.create_window(370, 180, window=button3)
 
-root.mainloop()
+root2.mainloop()
